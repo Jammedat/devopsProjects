@@ -27,6 +27,17 @@ chmod +x system_info.sh
 ```bash
 ./server-stats.sh
 ```
+## Make this script a CLI Tool
+
+```bash
+sudo mv server-stats.sh /usr/local/bin/server-stats
+```
+
+Then just run: 
+
+```bash
+server-stats
+```
 
 
 
