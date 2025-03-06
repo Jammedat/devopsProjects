@@ -1,0 +1,12 @@
+[2024-01-01 08:00:01] INFO: Application started successfully
+[2024-01-01 08:00:02] INFO: Database connection established
+[2024-01-01 08:15:33] WARN: High memory usage detected (85% used)
+[2024-01-01 08:30:45] ERROR: Failed to process request from client 192.168.1.100
+[2024-01-01 09:00:00] INFO: Scheduled backup started
+[2024-01-01 09:05:12] INFO: Backup completed successfully
+[2024-01-01 10:23:45] WARN: API response time exceeded threshold (2.5s)
+[2024-01-01 11:00:01] ERROR: Database query timeout after 30 seconds
+[2024-01-01 11:00:05] INFO: Retrying database connection
+[2024-01-01 11:00:06] INFO: Database connection restored
+[2024-01-01 12:00:00] INFO: Daily maintenance tasks started
+[2024-01-01 12:30:15] WARN: Disk usage above 80% on /var/log
