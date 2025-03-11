@@ -65,9 +65,11 @@ sudo systemctl restart nginx
 chmod +x deploy.sh
 ```
 
-3. RUn the script.
+3. Run the script.
 
-### Step 5 - Access your site through tthe public ip address of your VM.
+### Step 5 - Access your site through the public ip address of your VM.
+
+##
 
 Note: If you are windows user, you need to use ```WSL``` for the script to run as ```rsync``` cannot be executed in windows. Also while using ```wsl``` its better to follow the following approach to not encounter the issues related to the permissions:
 
