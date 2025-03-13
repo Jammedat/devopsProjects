@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Author: Sushil
+#Author: Tekendra Khadka
 #Date: 03/11/2025
 
 #This script uses rsync to deploy the static site to the server
