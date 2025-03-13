@@ -3,7 +3,7 @@
 ### Step 1 - Register and setup remote server on AWS or Azure
 Note: This is aligned with Azure
 1. Create a VM.
-2. Allow port 80 in INbound port rules.
+2. Allow port 80 in Inbound port rules.
 
 ### Step 2 - Install and configure Nginx
 1. Connect to your azure VM
@@ -71,7 +71,7 @@ chmod +x deploy.sh
 
 ##
 
-Note: If you are windows user, you need to use ```WSL``` for the script to run as ```rsync``` cannot be executed in windows. Also while using ```wsl``` its better to follow the following approach to not encounter the issues related to the permissions:
+Note: If you are windows user, it's better to use ```WSL```  as ```rsync``` is not natively available on windows. Also while using ```wsl``` its better to follow the following approach to not encounter the issues related to the permissions:
 
 1. Copy the private key file from your previous locations like ```/mnt/c/Users/username/Downloads/``` to your WSL home directory:
 
