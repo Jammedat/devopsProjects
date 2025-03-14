@@ -22,44 +22,45 @@ sudo chmod +x /usr/local/bin/dummy.sh
 sudo vi /etc/systemd/system/dummy.service
 ```
 
-4. Enable and start the service
+### Enable and start the service
 
-Reload the systemd to recognize new service:
+1. Reload the systemd to recognize new service:
 
 ```
 sudo systemctl daemon-reload
 ```
 
-Enable the service to start on boot:
+2. Enable the service to start on boot:
 
 ```
 sudo systemctl enable dummy
 ```
 
-Start the service;
+3. Start the service;
 
 ```
 sudo systemctl start dummy
 ```
 
-5. CHeck the service status and logs
+### CHeck the service status and logs
 
-Check if service is running:
+1. Check if service is running:
 
 ```
 sudo systemctl status dummy
 ```
 
-Check the realtime logs:
+2. Check the realtime logs:
 
 ```
 sudo journalctl -u dummy -f
 ```
 
-Open the log file to verify:
+3. Open the log file to verify:
 
 ```
 sudo tail -f /var/log/dummy-service.log
+```
 
 ### Interacting with the service
 
