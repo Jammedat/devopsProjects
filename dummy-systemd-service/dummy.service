@@ -1,0 +1,17 @@
+[Unit]
+# A short description of what the service does. Used for identification when checking the service status
+Description=Dummy Service
+# Specify that the service should only start after the network has been initialized
+After=network.target
+
+[Service]
+# Command to be executed to start the service
+ExecStart=/usr/local/bin/dummy.sh
+# Tell systemd to automatically restart the service if it stops for any reason
+Restart=always
+# Specify service to run as root user
+User=root
+
+[Install]
+# Indicate that the service should be started when the system reaches the multi-user (a common system state where most non-graphical services are active)
+WantedBy=multi-user.target
