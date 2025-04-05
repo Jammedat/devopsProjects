@@ -1,0 +1,12 @@
+---
+# tasks file for app
+- name: Upload the tarball to the server
+  copy:
+    src: /mnt/c/Users/darji/devops-projects/configuration-management/website.tar.gz
+    dest: /tmp/website.tar.gz
+
+- name: Extract the tarball
+  unarchive:
+    src: /tmp/website.tar.gz
+    dest: /var/www/html/
+    remote_src: yes

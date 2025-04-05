@@ -1,0 +1,8 @@
+---
+# tasks file for roles/ssh
+- name: Add the SSH public key
+  authorized_key:
+    user: azureuser
+    state: present  
+    manage_dir: yes
+    key: "{{ lookup('file', '~/.ssh/ansi_key.pub') }}"

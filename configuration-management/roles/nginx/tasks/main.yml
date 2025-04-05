@@ -1,0 +1,45 @@
+---
+# tasks file for roles/nginx
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+
+- name: Copy Nginx configuration file
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify:
+    - Restart Nginx
+
+- name: Copy Nginx site config
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/nginx.conf
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Enable site by linking to sites-enabled
+  file:
+    src: /etc/nginx/sites-available/nginx.conf
+    dest: /etc/nginx/sites-enabled/nginx.conf
+    state: link
+
+- name: Validate Nginx configuration
+  command: nginx -t
+  register: nginx_test
+  changed_when: false
+  failed_when: nginx_test.rc != 0
+
+
+- name: Ensure Nginx is started and enabled
+  service:
+    name: nginx
+    state: started
+    enabled: true
