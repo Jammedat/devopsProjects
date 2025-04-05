@@ -38,7 +38,7 @@ Deploys the static website:
 - Extracts contents to `/var/www/html`
 
 Package your static HTML website into compressed tarball as:
-- Navigate to your website directory:
+- Navigate to your website directory
 - Create the tarball:
 ```bash
 tar -czvf <name_of_your_web_dir>.tar.gz *
@@ -56,7 +56,7 @@ mkdir -p ~/.ssh
 ```
 - Give the necessary permission to the downloaded key-pem file of your vm:
 ```bash
-chmod 600 /mnt/c/Users/<username>/Ddownloads/<pem_file>
+chmod 600 /mnt/c/Users/<username>/Downloads/<pem_file>
 ```
 - Copy this pem file to the directory ~/.ssh
 ```bash
@@ -67,7 +67,9 @@ cp /mnt/c/Users/<username>/Downloads/<pem_file> ~/.ssh/
 chmod 400 ~/.ssh/<pem_file>
 ```
 - Now generate a public key from the private key file as:\
+```bash
 ssh-keygen -y -f ~/.ssh/ansi_key.pem > ~/.ssh/ansi_key.pub
+```
 
 ## Usage
 
