@@ -24,35 +24,25 @@ Steps:
 
       Install Java
 
-      ```
       sudo apt update
       sudo apt install openjdk-17-jre
-      ```
 
       Verify Java is Installed
-
-      ```
-java -version
-```
+      java -version
 
       Now, you can proceed with installing Jenkins
 
-      ```
-curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
-  /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-  https://pkg.jenkins.io/debian binary/ | sudo tee \
-  /etc/apt/sources.list.d/jenkins.list > /dev/null
-sudo apt-get update
-sudo apt-get install jenkins
-```
-      You can check in which port jenkins is bounded to by
+      curl -fsSL https://pkg.jenkins.io/debian/jenkins.io-2023.key | sudo tee \
+        /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+      echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+        https://pkg.jenkins.io/debian binary/ | sudo tee \
+        /etc/apt/sources.list.d/jenkins.list > /dev/null
+      sudo apt-get update
+      sudo apt-get install jenkins
 
-      ```
-ps -ef | grep jenkins
-```
 
-      **Note: ** By default, Jenkins will not be accessible to the external      world due to the inbound traffic restriction by Azure. Open port 8080   in the inbound traffic rules as show below.
+      **Note: ** By default, Jenkins will not be accessible to  the external world due to the inbound traffic restriction  by Azure. Open port 8080   in the inbound traffic rules  
+      as show below.
 
       - Go to VM you created
       - In the side bar -> Click on Networking -> Networking Settings
@@ -63,14 +53,14 @@ ps -ef | grep jenkins
       http://<vm-public-ip-address>:8080
 
       After you login to Jenkins, 
-            - Run the command to copy the Jenkins Admin Password - `sudo      cat /var/lib/jenkins/secrets/initialAdminPassword`
+            - Run the command to copy the Jenkins Admin Password - `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
             - Enter the Administrator password
 
       Click on Install suggested plugins
 
       Wait for the Jenkins to Install suggested plugins
 
-      Create First Admin User or Skip the step [If you want to use this Jenkins instance for future use-cases as well, better to create admin user]
+      Create First Admin User or Skip the step [If you want to  use this Jenkins instance for future use-cases as well,  better to create admin user]
 
       Jenkins Installation is Successful. You can now starting using the Jenkins 
 
@@ -88,25 +78,19 @@ ps -ef | grep jenkins
       Docker Slave Configuration
 
       Run the below command to Install Docker
-
-      ```
       sudo apt update
       sudo apt install docker.io
-      ```
+
 
       Grant Jenkins user and Ubuntu user permission to docker deamon.
-
-      ```
       sudo su - 
       usermod -aG docker jenkins
       usermod -aG docker ubuntu
-      ```
+
 
       Once you are done with the above steps, it is better to restart Jenkins.
-
-      ```
       http://<vm-public-ip>:8080/restart
-      ```
+
 
       The docker agent configuration is now successful.
 
@@ -118,7 +102,7 @@ ps -ef | grep jenkins
        2.4 Kubernetes Continuous Deploy plugin
 
     3. Create a new Jenkins pipeline:
-       2.1 In Jenkins, create a new pipeline job and configure it with the Git repository URL for the Java application.
+       2.1 In Jenkins, create a new pipeline job and configure  it with the Git repository URL for the Java application.
        2.2 Add a Jenkinsfile to the Git repository to define the pipeline stages.
 
     4. Define the pipeline stages:
@@ -132,28 +116,30 @@ ps -ef | grep jenkins
         Stage 8: Promote the application to a production environment using Argo CD.
 
     5. Configure a Sonar Server locally
-       ```
          sudo su -
          apt install unzip
          adduser sonarqube
          sudo su -sonarqube
-         wget https://binaries.sonarsource.com/Distribution/sonarqube/        sonarqube-9.4.0.54424.zip
+         wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-9.4.0.54424.zip
          unzip *
          chmod -R 755 /home/sonarqube/sonarqube-9.4.0.54424
          chown -R sonarqube:sonarqube /home/sonarqube/sonarqube-9.4.0.54424
          cd sonarqube-9.4.0.54424/bin/linux-x86-64/
          ./sonar.sh start
-         ```
 
          Hurray !! Now you can access the `SonarQube Server` on `http://<ip-address>:9000`
     
     6. Add the necessary credentials in Jenkins to authenticate with:
        6.1 Sonarqube
-          Access the sonarqube and generate tokens by going to the security and use tokens as a secret text in global credentials in Jenkins by going to the manage credentials.
+          Access the sonarqube and generate tokens by going to  the security and use tokens as a secret text in  
+          global credentials in Jenkins by going to the manage  credentials.
        6.2 Docker Hub
-          In global credentials add docker's credentials - choose Username with password and insert username and password as your dockerhub's and insert id as 'docker-cred'.
+          In global credentials add docker's credentials -  choose Username with password and insert username  
+          and password as your dockerhub's and insert id as  'docker-cred'.
        6.3 GitHub
-          Go to the settings of your Github account and generate a classic tokens by going to Developer settings > Personal access tokens > Tokens (classic) > Generate new token and add that in global credentials as secret text by inserting ID as 'github' and secret as the tokens.
+          Go to the settings of your Github account and  
+          generate a classic tokens by going to Developer  settings > Personal access tokens > Tokens (classic) 
+           > Generate new token and add that in global  credentials as secret text by inserting ID as  'github' and secret as the tokens. 
 
     7. Configure Jenkins pipeline stages:
         Stage 1: Use the Git plugin to check out the source code from the Git repository.
@@ -161,14 +147,15 @@ ps -ef | grep jenkins
         Stage 3: Use the JUnit and Mockito plugins to run unit tests.
         Stage 4: Use the SonarQube plugin to analyze the code quality of the Java application.
         Stage 5: Use the Maven Integration plugin to package the application into a JAR file.
-        Stage 6: Use the Kubernetes Continuous Deploy plugin to deploy the application to a test environment using Helm.
-        Stage 7: Use a testing framework like Selenium to run user acceptance tests on the deployed application.
+        Stage 6: Use the Kubernetes Continuous Deploy plugin to  deploy the application to a test environment using Helm.
+        Stage 7: Use a testing framework like Selenium to run  user acceptance tests on the deployed application.
         Stage 8: Use Argo CD to promote the application to a production environment.
 
     8. Set up Argo CD:
         Install Argo CD on the Kubernetes cluster.
-        Set up a Git repository for Argo CD to track the changes in the Helm charts and Kubernetes manifests.
-        Create a Helm chart for the Java application that includes the Kubernetes manifests and Helm values.
+        Set up a Git repository for Argo CD to track the  
+        changes in the Helm charts and Kubernetes manifests. 
+        Create a Helm chart for the Java application that  includes the Kubernetes manifests and Helm values. 
         Add the Helm chart to the Git repository that Argo CD is tracking.
 
     9. Run the Jenkins pipeline:
@@ -198,17 +185,18 @@ ps -ef | grep jenkins
        11.5 Edit the type in example-argocd-server from ClusterIp to NodePort
        11.6 Access the url as: minikube service example-argocd-server and minikube service list
        Verify the pods are running as: kubectl get pods
-       11.7 Sign in with username as admin and get the password as: ```
+       11.7 Sign in with username as admin and get the password as:
        kubectl get secret
        kubectl edit secret example-argocd-cluster
-       ```
+
        Copy the secret and convert it as:
-       echo 'secret' | base64 -d
-       11.8 Click on create application and provide necessary information of the github repo and you are good to go.
+       echo "secret" | base64 -d
+       11.8 Click on create application and provide necessary  information of the github repo and you are good to go.
        11.9 Deploy as: kubectl get deploy
        11.10 Verify pods are running as: kubectl get pods
        11.11 Try to edit and change the code on the files and see if ArgoCD is working or not.
 
 
 
-This end-to-end Jenkins pipeline will automate the entire CI/CD process for a Java application, from code checkout to production deployment, using popular tools like SonarQube, Argo CD, Helm, and Kubernetes.
+This end-to-end Jenkins pipeline will automate the entire CI/CD  process for a Java application, from code checkout to production  
+deployment, using popular tools like SonarQube, Argo CD, Helm,  and Kubernetes.
