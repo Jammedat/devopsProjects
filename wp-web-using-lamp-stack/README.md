@@ -37,8 +37,28 @@ sudo mysql -u root -p
 
 ## 4. Install PHP
 ```bash
-sudo apt install php libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip
+sudo apt install php
+sudo apt install libapache2-mod-php php-mysql php-curl php-gd php-mbstring php-xml php-xmlrpc php-soap php-intl php-zip
 ```
+
+Check PHP version:
+```bash
+php -v
+```
+
+Create a test PHP file:
+```bash
+cd /var/www/html
+sudo vi sample.php
+```
+
+Add this content:
+```bash
+php
+<?php phpinfo(); ?>
+```
+
+Now, access the file by entering `http://your-IP-address/sample.php` in your web browser.
 
 ## 5. Install WordPress
 ```bash
