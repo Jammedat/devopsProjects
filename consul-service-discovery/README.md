@@ -63,10 +63,10 @@ server: This specifies that this server should run as a Consul server. Because t
 log_level: This sets the logging level for the Consul agent. In this case, only logs with a level of "INFO" or higher will be displayed.
 Step 6: Start the consul server in the background using the following command. We are using the -dev flag to specify that we are running a single server in dev mode.
 
-```sudo nohup consul agent -dev -config-dir /etc/consul.d/ &```
-You can verify the consul server status using the following command.
-
-`consul members`
+```
+sudo nohup consul agent -dev -config-dir /etc/consul.d/ &
+```
+You can verify the consul server status using the following command: `consul members`
 
 Step 6: If you visit the <server IP:8500> you should be able to access the consul dashboard.
 
@@ -81,17 +81,27 @@ Do the below configuration in both backend servers.
 
 Step 1: Log in to the backend instances and update the package information.
 
-`sudo apt-get update -y`
+```bash
+sudo apt-get update -y
+```
+
 Step 2: Install Nginx in both instances by running the command.
 
-`sudo apt install nginx -y`
+```bash
+sudo apt install nginx -y
+```
 Step 2: Once Nginx is installed, we need to go to the default HTML location and edit the index.html file in both servers to differentiate the servers.
 
 Use the following command to go to the directory and edit the file.
 
-`cd /var/www/html`
+```bash
+cd /var/www/html
+```
 
-`sudo vi index.html`
+```bash
+sudo vi index.html
+```
+
 Copy the below HTML file to the index.html file. On the second server, replace SERVER-01 with SERVER-02 in the HTML file to differentiate between the two backend servers.
 ```bash
 <!DOCTYPE html>
@@ -114,16 +124,18 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 sudo apt update && sudo apt install consul
 ```
 
-Check if it is installed properly by running the following command.
-
-`consul -version`
+Check if it is installed properly by running the following command: `consul -version`
 Step 4: We need to replace the default consul configuration file config.hcl inside the location /etc/consul.d with our consul.hcl file.
 
 Rename the default file and create a new file using the following commands.
 
-`sudo mv /etc/consul.d/consul.hcl /etc/consul.d/consul.hcl.back`
+```bash
+sudo mv /etc/consul.d/consul.hcl /etc/consul.d/consul.hcl.back
+```
 
-`sudo vi /etc/consul.d/consul.hcl`
+```bashsudo vi /etc/consul.d/consul.hcl
+```
+
 Add the following contents to the file. If you have used a different encrypt key in the server, you need to replace it with your encrypt key. Also, replace 34.222.141.217 with your consul server IP address.
 ```bash
 "server" = false
@@ -141,7 +153,10 @@ The above configuration is used by the consul agent to register the node informa
 
 Step 5: Now we need to create a backend.hcl config file in /etc/consul.d directory to register the Nginx service and health check URLs with the consul server. So that the consul server will constantly monitor the Nginx service health.
 
-`sudo vi /etc/consul.d/backend.hcl`
+```bash
+sudo vi /etc/consul.d/backend.hcl
+``
+`
 Add the following contents to the file and save it.
 ```bash
 "service" = {
@@ -158,10 +173,15 @@ This file registers your backend servers to the consul server.
 
 Now you can validate the configs by running the following command.
 
-`consul validate /etc/consul.d`
+```bash
+consul validate /etc/consul.d
+```
+
 Step 6: After completing every configuration start the consul agent using the command.
 
-`sudo nohup consul agent -config-dir /etc/consul.d/ &`
+```bash
+sudo nohup consul agent -config-dir /etc/consul.d/ &
+```
 Now check if is working by visiting your consul UI. If the services shows the backend with healthy status it means the backend has registered itself successfully.
 
 ## Setup Load-Balancer
@@ -176,7 +196,10 @@ sudo apt-get install unzip -y
 
 Step 2: Install Nginx using the following command.
 
-`sudo apt install nginx -y`
+```bash
+sudo apt install nginx -y
+```
+
 Step 2: Now download the consul-template binary using the command given below.
 ```bash
 sudo curl -L  https://releases.hashicorp.com/consul-template/0.30.0/consul-template_0.30.0_linux_amd64.zip -o /opt/consul-template.zip
@@ -184,12 +207,13 @@ sudo curl -L  https://releases.hashicorp.com/consul-template/0.30.0/consul-templ
 sudo unzip /opt/consul-template.zip -d  /usr/local/bin/
 ```
 
-Verify the installation by checking the version.
-
-`consul-template --version`
+Verify the installation by checking the version: `consul-template --version`
 Step 3: Create a file named load-balancer.conf.ctmpl inside the location /etc/nginx/conf.d
 
-`sudo vi /etc/nginx/conf.d/load-balancer.conf.ctmpl`
+```bash
+sudo vi /etc/nginx/conf.d/load-balancer.conf.ctmpl
+```
+
 Copy the following contents to the file. Here the block highlighted in bold is the go template that iterates over the backend service in the consul server and gets all the IP addresses of registered backends.
 ```bash
 upstream backend {
@@ -231,12 +255,17 @@ template {
 
 Step 5: Now disable the default server configuration by deleting the default file, using the command.
 
- `sudo rm /etc/nginx/sites-enabled/default`
+ ```bash
+ sudo rm /etc/nginx/sites-enabled/default
+ ```
+
 We need to remove this file to avoid conflict with the server configuration because this file contains the default server configuration.
 
 Restart Nginx to make the changes, and run the following command to restart Nginx.
 
-`sudo systemctl restart nginx`
+```bash
+sudo systemctl restart nginx
+```
 Step 6: After finishing the configurations start the consul agent template using the command. Consul Template starts a daemon that continuously monitors the Consul server key/value store for changes.
 
 sudo nohup consul-template -config=/etc/nginx/conf.d/consul-template.hcl &
@@ -262,7 +291,9 @@ Testing Service Discovery
 Now that everything is set up and running, test it by watching what happens when you stop one of your backend servers.
 
 Stop one of the backend servers. The Consul server will mark the stopped backend as unhealthy and the health check will fail.
-`sudo systemctl stop nginx`
+```bash
+sudo systemctl stop nginx
+```
 
 
 The Consul template sends an immediate signal that one of the servers is down, and it automatically creates a new configuration file with only one server.
