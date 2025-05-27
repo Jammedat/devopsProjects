@@ -1,4 +1,4 @@
-# Setup Service Discovery Using Nginx & Consul
+# Setup Service Discovery Using Consul & Nginx 
 
 ## Setup Prerequisites
 Before starting the setup, you will need the following:
@@ -295,7 +295,6 @@ Stop one of the backend servers. The Consul server will mark the stopped backend
 sudo systemctl stop nginx
 ```
 
-
 The Consul template sends an immediate signal that one of the servers is down, and it automatically creates a new configuration file with only one server.
 
 The consul template running in the load-balancer node notices the failed backend as it continuously monitors the key values in the consul server.
@@ -303,3 +302,4 @@ The consul template running in the load-balancer node notices the failed backend
 It then updates /etc/nginx/conf.d/load-balancer.conf with just one backend IP and gracefully reloads the Nginx service.
 
 This workflow ensures that only health backends are always updated in the Nginx load-balancer.conf file.
+
