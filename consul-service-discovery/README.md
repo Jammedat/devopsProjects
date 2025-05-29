@@ -133,7 +133,8 @@ Rename the default file and create a new file using the following commands.
 sudo mv /etc/consul.d/consul.hcl /etc/consul.d/consul.hcl.back
 ```
 
-```bashsudo vi /etc/consul.d/consul.hcl
+```bash
+sudo vi /etc/consul.d/consul.hcl
 ```
 
 Add the following contents to the file. If you have used a different encrypt key in the server, you need to replace it with your encrypt key. Also, replace 34.222.141.217 with your consul server IP address.
