@@ -40,4 +40,4 @@ ansible-playbook -i inventory.ini -e "consul_server_address=$PRIVATE_IP" backend
 ansible-playbook -i inventory.ini -e "consul_server_address=$PRIVATE_IP:8500" loadbalancer.yaml
 ```
 
-Note: The manual setup of this project is provided [here](./https://github.com/Jammedat/devopsProjects/tree/main/consul-service-discovery).
+Note: The manual setup of this project is provided [here](https://github.com/Jammedat/devopsProjects/tree/main/consul-service-discovery).
