@@ -1,0 +1,8 @@
+resource_group_name = "single-vm-resources"
+location = "West US 2"
+virtual_network_name = "demo-vnet"
+subnet_name = "demo-subnet"
+network_interface_name = "demo-nic"
+vm_name = "loadbalancer"
+public_ip_name = "demo-pip"
+network_security_group_name = "demo-nsg"
