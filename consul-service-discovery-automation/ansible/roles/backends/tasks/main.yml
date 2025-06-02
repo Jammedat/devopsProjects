@@ -1,0 +1,75 @@
+---
+# tasks file for backends
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: Copy nginx index html file
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+
+
+- name: Start and enable nginx service
+  service:
+    name: nginx
+    state: started
+    enabled: yes
+
+- name: Update apt cache
+  apt:
+    update_cache: yes
+
+- name: Install required packages
+  apt:
+    name:
+      - wget
+      - gnupg
+
+- name: Add HashiCorp GPG key and repository
+  shell: |
+    wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+    echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+- name: Update apt cache and install Consul
+  apt:
+    update_cache: yes
+    name: consul
+    state: present
+
+- name: Render consul configuration template
+  template:
+    src: config.json.j2
+    dest: /etc/consul.d/config.json
+  vars:
+    server: "false"
+    datacenter: "dc1"
+
+- name: Render consul backend template
+  template:
+    src: backend.json.j2
+    dest: /etc/consul.d/backend.json
+
+- name: Create Consul systemd service unit
+  template:
+    src: consul.service.j2
+    dest: /etc/systemd/system/consul.service
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Start and enable Consul service
+  systemd:
+    name: consul
+    state: started
+    enabled: true
+

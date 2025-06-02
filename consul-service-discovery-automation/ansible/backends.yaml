@@ -1,0 +1,10 @@
+---
+- hosts: backends
+  remote_user: "{{ ansible_user }}"
+  become: yes
+  
+  vars:
+    encrypt: "ZENZNrsXU336Uma+S4XUj9sxvICj32N7XdEzrbYbRpY="
+  roles:
+    - backends
+    

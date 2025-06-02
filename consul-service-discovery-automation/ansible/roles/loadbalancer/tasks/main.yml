@@ -1,0 +1,56 @@
+---
+# tasks file for loadbalancer
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+      upgrade: yes
+      update_cache: yes
+  
+- name: Install Nginx on Server
+  apt: 
+      name: nginx 
+      state: latest
+
+- name: Start and enable a service
+  service:
+      name: nginx
+      state: started
+      enabled: true
+
+- name: Download zip file
+  get_url:
+      url: "https://releases.hashicorp.com/consul-template/0.30.0/consul-template_0.30.0_linux_amd64.zip"
+      dest: /tmp/consul.template.zip
+      mode: 0644
+
+- name: Insatll unzip package
+  apt:
+      name: unzip
+      state: latest
+
+- name: Unzip consul-template
+  unarchive:
+      src: /tmp/consul.template.zip
+      dest: /usr/local/bin/
+      remote_src: yes
+
+- name: Copy files from directory to destination
+  copy:
+      src: "files/load-balancer.conf.ctmpl"
+      dest: "/etc/nginx/conf.d/load-balancer.conf.ctmpl"
+      remote_src: no
+
+- name: Copy nginx consul template
+  template:
+      src: consul-template.hcl.j2
+      dest: /etc/nginx/conf.d/consul-template.hcl
+
+- name: Start consul agent template
+  shell: consul-template -config=/etc/nginx/conf.d/consul-template.hcl &
+
+- name: Remove default sites-enabled file
+  file:
+    path: "/etc/nginx/sites-enabled/default"
+    state: absent
+  notify:
+    - Restart Nginx

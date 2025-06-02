@@ -1,0 +1,31 @@
+---
+- name: Get Azure VM Private IP
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    resource_group: "new-resources"
+    vm_name: "consul-server"
+
+  tasks:
+    - name: Get VM private IP directly
+      command: >
+        az vm list-ip-addresses
+        --name "{{ vm_name }}"
+        --resource-group "{{ resource_group }}"
+        --query "[0].virtualMachine.network.privateIpAddresses[0]"
+        -o tsv
+      register: ip_result
+      changed_when: false
+      ignore_errors: true
+
+    - name: Fail if IP not found
+      fail:
+        msg: "Could not retrieve private IP for VM {{ vm_name }}"
+      when: ip_result.stdout == ""
+
+    - name: Display private IP
+      debug:
+        msg: "Private IP is {{ ip_result.stdout }}"
+      when: ip_result.stdout != ""

@@ -1,0 +1,8 @@
+---
+- hosts: consul
+  remote_user: "{{ ansible_user }}"
+  become: yes
+
+  roles:
+    - consul
+    

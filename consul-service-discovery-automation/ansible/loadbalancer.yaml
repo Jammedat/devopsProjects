@@ -1,0 +1,11 @@
+---
+- hosts: loadbalancer
+  remote_user: "{{ ansible_user }}"
+  become: yes
+
+  roles:
+    - loadbalancer
+
+  vars:
+    consul_server_address: 20.36.204.85:8500
+
