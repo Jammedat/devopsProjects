@@ -23,7 +23,7 @@ sudo chown -R azureuser:azureuser /opt/tomcat10
 sudo chmod +x /opt/tomcat10/bin/*.sh
 
 # Download WAR file from Azure Blob
-wget "https://artifactsstorage21.blob.core.windows.net/democontainer/vprofile-v2.war?sp=r&st=2025-06-26T12:29:58Z&se=2025-06-26T20:29:58Z&sv=2024-11-04&sr=b&sig=RdviaLNeBANLMaiUYOrTRKdspN0vpV1wmqhBpLw7cgQ%3D" -O /tmp/vprofile-v2.war
+wget "<blob SAS url>" -O /tmp/vprofile-v2.war
 
 # Deploy WAR to Tomcat 10
 sudo chown -R azureuser:azureuser /opt/tomcat10
